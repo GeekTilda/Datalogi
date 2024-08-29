@@ -49,7 +49,7 @@ def MakeDramaList(reader):
     dramas = []     #Make empty list
     for row in reader:
         dramas.append(Drama(row))   #Append all the dramas to the list
-    return(dramas)
+    return dramas
 
 def MaxRank(dramas):
     max = float(0)
