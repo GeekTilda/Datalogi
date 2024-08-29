@@ -1,11 +1,11 @@
 from linkedQFile import LinkedQ
-from linkedQFile import Node
+import sys
 
 ### MAIN
         
 def main():
     queue = LinkedQ()
-    initializeQueue(queue, [7,1,12,2,8,3,11,4,9,5,13,6,10])
+    initializeQueueFromInput(queue)
     CardTrick(queue)
         
 ### FUNCTIONS 
@@ -20,10 +20,18 @@ def CardTrick(queue):
             queue.enqueue(temp)
             queue.dequeue()
 
-def initializeQueue(queue, values):
-    for value in values:
-        queue.enqueue(value)
+def readInput():
+    line = sys.stdin.readline().strip()
+    numbers = line.split()
+    return [int(num) for num in numbers]
+
+def initializeQueueFromInput(queue):
+    numbers = readInput()
+    for num in numbers:
+        queue.enqueue(num)
 
 ### CALLING MAIN
 
 main()
+
+### 7 1 12 2 8 3 11 4 9 5 13 6 10   
