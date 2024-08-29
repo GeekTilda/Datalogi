@@ -18,6 +18,9 @@ class Node():
 
     def nextNode(self):
         return self.next
+    
+    def __str__(self):
+        return self.value
 
 class LinkedQ():
 
@@ -49,3 +52,5 @@ class LinkedQ():
         else:
             return False
         
+    def __str__(self):
+        return str(self._first.getValue())
