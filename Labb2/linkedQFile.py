@@ -15,9 +15,6 @@ class Node():
 
     def getValue(self):
         return self.value
-
-    def nextNode(self):
-        return self.next
     
     def __str__(self):
         return self.value
@@ -54,5 +51,4 @@ class LinkedQ():
         
     def __str__(self):
         return str(self._first.getValue())
-    
     
