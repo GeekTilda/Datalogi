@@ -37,7 +37,7 @@ class Drama():
 ### MAIN 
 
 def main():
-    with open('C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\kdrama.csv') as kdramafile:
+    with open('C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\Labb1\\kdrama.csv') as kdramafile:
         reader = csv.reader(kdramafile, delimiter=',')
         next(reader)    #Skip the first line (header)
         dramas = MakeDramaList(reader)
