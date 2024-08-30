@@ -23,7 +23,7 @@ def CardTrick(queue):
 def readInput():
     line = sys.stdin.readline().strip()
     numbers = line.split()
-    return [int(num) for num in numbers]
+    return [num for num in numbers]
 
 def initializeQueueFromInput(queue):
     numbers = readInput()
