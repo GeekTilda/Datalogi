@@ -54,3 +54,5 @@ class LinkedQ():
         
     def __str__(self):
         return str(self._first.getValue())
+    
+    
