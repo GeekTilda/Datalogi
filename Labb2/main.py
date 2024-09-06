@@ -6,26 +6,29 @@ import sys
 def main():
     queue = LinkedQ()
     initializeQueueFromInput(queue)
+    print("Storleken av vår kö: " + str(queue.size()))
     CardTrick(queue)
         
 ### FUNCTIONS 
 
 def CardTrick(queue):
+    printStr = ""
     while not (queue.isEmpty()):
         temp = queue.dequeue()
         if queue.isEmpty():
-            print(temp)
+            printStr += temp
         else:
-            print(queue)
+            printStr += str(queue.getFirst()) + " "
             queue.enqueue(temp)
             queue.dequeue()
+    print(printStr)
 
 def readInput():
     line = sys.stdin.readline().strip()
     numbers = line.split()
-    return [num for num in numbers]
+    return numbers
 
-def initializeQueueFromInput(queue):
+def initializeQueueFromInput(queue):    # Makes our queue :)
     numbers = readInput()
     for num in numbers:
         queue.enqueue(num)

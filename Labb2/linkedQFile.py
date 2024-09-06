@@ -3,6 +3,11 @@ class Node():
     def __init__(self, value = None):
         self.value = value
         self.next = None
+    
+    def __str__(self):
+        return self.value
+
+    ### GETTERS & SETTERS
 
     def setNext(self,new):
         self.next = new
@@ -15,40 +20,54 @@ class Node():
 
     def getValue(self):
         return self.value
-    
-    def __str__(self):
-        return self.value
 
 class LinkedQ():
 
     def __init__(self):
-        self._first = None
-        self._last = None
+        self.__first = None
+        self.__last = None
 
     def enqueue(self, value):    # Adds a new node to the end and makes sure that the list isnt empty
         newNode = Node(value)
         if not self.isEmpty():
-            self._last.setNext(newNode)
-            self._last = newNode
+            self.__last.setNext(newNode)
+            self.__last = newNode
         else: 
-            self._first = newNode
-            self._last = newNode
+            self.__first = newNode
+            self.__last = newNode
 
     def dequeue(self):  # Makes the new first node the next node, and returns the value (aka removes the first node)
         if self.isEmpty():
             return None
-        temp = self._first
-        self._first = self._first.getNext()
-        if self._first is None:
-            self._last = None
+        temp = self.__first
+        self.__first = self.__first.getNext()
+        if self.__first is None:
+            self.__last = None
         return temp.getValue()
     
     def isEmpty(self):  # Checks if the list is empty
-        if self._first == None:
+        if self.__first == None:
             return True
         else:
             return False
         
+    def size(self): # Returns the size of our linkedQ. 
+        if self.isEmpty():
+            counter = 0
+            return counter
+        else:
+            counter = 1
+
+        currentNode = self.__first
+        while currentNode.next != None:
+            currentNode = currentNode.next
+            counter += 1
+        return counter
+
     def __str__(self):
-        return str(self._first.getValue())
+        return str(self.getFirst())
     
+    ### GETTERS & SETTERS
+
+    def getFirst(self):
+        return str(self.__first)
