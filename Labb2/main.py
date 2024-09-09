@@ -1,4 +1,5 @@
 from linkedQFile import LinkedQ
+from arrayQFile import ArrayQ
 import sys
 
 ### MAIN
@@ -18,7 +19,7 @@ def CardTrick(queue):
         if queue.isEmpty():
             printStr += temp
         else:
-            printStr += str(queue.getFirst()) + " "
+            printStr += str(queue) + " "
             queue.enqueue(temp)
             queue.dequeue()
     print(printStr)

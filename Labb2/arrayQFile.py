@@ -3,7 +3,8 @@ from array import array
 class ArrayQ():
     
     def __init__(self):
-        self._queue = [7,1,12,2,8,3,11,4,9,5,13,6,10]
+        #self._queue = [7,1,12,2,8,3,11,4,9,5,13,6,10]
+        self._queue = array("i")
 
     def __str__(self):  # Writes out the first element in queue
         return str(self._queue[0])
@@ -12,7 +13,7 @@ class ArrayQ():
         self._queue.append(n)
 
     def dequeue(self):  # Takes the first element of the queue out of it
-        return self._queue.pop(0)
+        return str(self._queue.pop(0))
     
     def isEmpty(self):
         if self._queue.__len__() == 0:
