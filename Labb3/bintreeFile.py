@@ -45,32 +45,49 @@ class Bintree:
 def push(root, newValue):
     if not binarySearch(root, newValue):
         while (root != None):
-            if (root > newValue):
+            if (root.getRight().getValue() > newValue):
                 if root.getLeft() != None:
                     root = root.getLeft()
                 else:
                     return root.setLeft(Node(newValue))
-            if (root < newValue):
+            if (root.getLeft().getValue() < newValue):
                 if root.getRight() != None:
                     root = root.getRight()
                 else:
                     return root.setRight(Node(newValue))
         root = Node(newValue)
 
-def binarySearch(root,value):    
-    while(root != None):
-        if (root > value):
-            if (root.getLeft() == None):
-                return False
-            else:
-                root = root.getLeft()
-        if (root < value):
-            if (root.getRight() == None):
-                return False
-            else:
-                root = root.getRight()
-        if (root == value):
+def binarySearch(root,value):
+    currentNode = root
+    while currentNode != None:
+        print(str(currentNode.getValue()))
+        if currentNode.getValue() == value:
             return True
+        elif (currentNode.getRight() != None) and (currentNode.getRight().getValue() > value):
+            if currentNode.getLeft() == None:
+                return False
+            else:
+                currentNode = currentNode.getLeft()
+        elif (currentNode.getLeft() != None) and (currentNode.getLeft().getValue() < value): 
+            if currentNode.getRight() == None:
+                return False
+            else:
+                currentNode = currentNode.getRight()
     return False
 
 #def writeInorder():
+
+tree = Bintree()
+
+rootNode = Node(5)
+leftNode = Node(3)
+rightNode = Node(7)
+rrnode = Node(8)
+
+rootNode.setLeft(leftNode)
+rootNode.setRight(rightNode)
+rightNode.setRight(rrnode)
+
+tree.root = rootNode
+
+print(binarySearch(rootNode,4))
