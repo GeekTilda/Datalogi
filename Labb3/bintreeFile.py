@@ -1,21 +1,34 @@
+class Bintree():
+    def __init__(self):
+        self.root = None
+
+    def put(self, newValue):
+        if self.root == None:
+            self.root = Node(newValue)
+        else:
+            push(self.root, newValue)
+
+    def __contains__(self, value):
+        return binarySearch(self.root, value)
+
+    def write(self):
+        printTree(self.root)
+        print("\n")
+    
+
 class Node():
 
     def __init__(self, value = None):
+        self.value = value
         self.left = None
         self.right = None
-        self.value = value
-
-    def __str__(self):
-        return self.value
-
-    ### GETTERS & SETTERS
 
     def setLeft(self,new):
         self.left = new
 
     def getLeft(self):
         return self.left
-
+    
     def setRight(self,new):
         self.right = new
 
@@ -27,67 +40,61 @@ class Node():
 
     def getValue(self):
         return self.value
-
-class Bintree:
-    def __init__(self):
-        self.root = None
-
-    def put(self,newValue): # Sorts in newvalue into the tree
-        push(self.root,newValue)
-
-    def __contains__(self,value):   # True if value exists in the tree, False otherwise
-        return binarySearch(self.root,value)
-
-    def write(self):    # Writes out the tree in inorder
-        #writeInorder(self.root)
-        print("\n")    
     
-def push(root, newValue):
-    if not binarySearch(root, newValue):
-        while (root != None):
-            if (root.getRight().getValue() > newValue):
-                if root.getLeft() != None:
-                    root = root.getLeft()
-                else:
-                    return root.setLeft(Node(newValue))
-            if (root.getLeft().getValue() < newValue):
-                if root.getRight() != None:
-                    root = root.getRight()
-                else:
-                    return root.setRight(Node(newValue))
-        root = Node(newValue)
+    def __str__(self):
+        return str(self.value)
+    
 
-def binarySearch(root,value):
-    currentNode = root
-    while currentNode != None:
-        print(str(currentNode.getValue()))
-        if currentNode.getValue() == value:
-            return True
-        elif (currentNode.getRight() != None) and (currentNode.getRight().getValue() > value):
-            if currentNode.getLeft() == None:
-                return False
-            else:
-                currentNode = currentNode.getLeft()
-        elif (currentNode.getLeft() != None) and (currentNode.getLeft().getValue() < value): 
-            if currentNode.getRight() == None:
-                return False
-            else:
-                currentNode = currentNode.getRight()
+def nodeToLeft(node1, node2):
+    if node2.getValue() < node1.getValue():
+        return True
     return False
 
-#def writeInorder():
+def push(root, newValue):
+    if not binarySearch(root, newValue):
+        currentNode = root
+        newNode = Node(newValue)
 
-tree = Bintree()
+        run = True
+        while run:      # Runs until newNode is placed.
+            while nodeToLeft(currentNode, newNode):
+                if currentNode.getLeft() == None:
+                    currentNode.setLeft(newNode)    # Node is placed to the left.
+                    run = False
+                    break
+                currentNode = currentNode.getLeft()
 
-rootNode = Node(5)
-leftNode = Node(3)
-rightNode = Node(7)
-rrnode = Node(8)
+            while not nodeToLeft(currentNode, newNode):
+                if currentNode.getRight() == None:
+                    currentNode.setRight(newNode)   # Node is placed to the right.
+                    run = False
+                    break
+                currentNode = currentNode.getRight()
+            
+    
+def binarySearch(root, value):
+    currentNode = root
+    if currentNode != None:
+        while currentNode.getValue() != value:
 
-rootNode.setLeft(leftNode)
-rootNode.setRight(rightNode)
-rightNode.setRight(rrnode)
+            if nodeToLeft(currentNode, Node(value)):
+                currentNode = currentNode.getLeft()
+            else:
+                currentNode = currentNode.getRight()
+            
+            if currentNode == None:
+                return False
+                
+        return True
+    return False
 
-tree.root = rootNode
 
-print(binarySearch(rootNode,4))
+def printTree(node): # Loops through the entire tree recursively and prints the nodes in inorder.
+    if node is None:
+        return None
+    
+    printTree(node.getLeft())   # First step, go to leftmost node.
+
+    print(node.getValue(), end = " ")   # As getLeft() reached None, returns to previous node and prints value.
+
+    printTree(node.getRight())  # Checks to the right of printed node.

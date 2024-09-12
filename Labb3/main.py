@@ -1,18 +1,24 @@
 from bintreeFile import Bintree
-import sys
+
+def makeTree():
+    tree = Bintree()
+    data = input().strip()
+    while data != "#":
+        tree.put(data)
+        data = input().strip()
+    return tree
+
+def searches(tree):
+    findme = input().strip()
+    while findme != "#":
+        if findme in tree:
+            print(findme, "found")
+        else:
+            print(findme, "not found")
+        findme = input().strip()
 
 def main():
-    tree = Bintree()
-    initializeTreeFromInput(tree)
-
-def readInput():
-    line = sys.stdin.readline().strip()
-    numbers = line.split()
-    return numbers
-
-def initializeTreeFromInput(tree):    # Makes our treee :)
-    numbers = readInput()
-    for num in numbers:
-        tree.put(int(num))
+    tree = makeTree()
+    searches(tree)
 
 main()
