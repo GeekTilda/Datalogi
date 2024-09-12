@@ -13,9 +13,7 @@ def printCommonWords():
         for row in englishFile:
             for word in row.split(" "):
                 word = word.strip()
-                if word in english:
-                    pass
-                else:
+                if word not in english:
                     english.put(word)
                     if svenska.__contains__(word):
                         print(word, end = " ")
