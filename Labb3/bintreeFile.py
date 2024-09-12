@@ -89,12 +89,23 @@ def binarySearch(root, value):
     return False
 
 
-def printTree(node): # Loops through the entire tree recursively and prints the nodes in inorder.
-    if node is None:
-        return None
-    
-    printTree(node.getLeft())   # First step, go to leftmost node.
+def printTree(root):
+    stack = []
+    currentNode = root
 
-    print(node.getValue(), end = " ")   # As getLeft() reached None, returns to previous node and prints value.
+    while True:
+        # Gå så långt vänster som möjligt
+        while currentNode != None:
+            stack.append(currentNode)
+            currentNode = currentNode.getLeft()
+        
+        # Om stacken är tom har vi besökt alla noder, break while-loopen :)
+        if not stack:
+            break
 
-    printTree(node.getRight())  # Checks to the right of printed node.
+        # Tar ut sista noden i "listan"
+        currentNode = stack.pop()
+        print(currentNode.getValue(), end=" ")  # Skriv ut nodens värde
+
+        # Besök högra underträdet
+        currentNode = currentNode.getRight()
