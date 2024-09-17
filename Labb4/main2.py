@@ -5,7 +5,7 @@ def main():
     usedWords = Bintree()       # Bintree with used words.
     q = LinkedQ()               # Queue for going through words for wordsearch.
 
-    wordList = makeWordList("word3.txt")
+    wordList = makeWordList("C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\Labb4\\word3.txt")
 
     startWord = input("Ge ett startord: ")
     endWord = input("Ge ett slutord: ")

@@ -9,7 +9,7 @@ def main():
     gamla = Bintree()       # Bintree with used words.
     q = LinkedQ()           # Queue for going through words for wordsearch.
 
-    with open("word3.txt", "r", encoding = "utf-8") as svenskfil:
+    with open("C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\Labb4\\word3.txt", "r", encoding = "utf-8") as svenskfil:
         for rad in svenskfil:
             ordet = rad.strip()                # One three-letter-word per row.
             svenska.put(ordet)                 # Puts it into the Bintree.
