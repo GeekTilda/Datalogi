@@ -52,7 +52,10 @@ class LinkedQ():
     
     # Checks if the queue is empty
     def isEmpty(self):
-        return self.__first is None
+        if self.__first == None:
+            return True
+        else:
+            return False
         
     def size(self):
         if self.isEmpty():
