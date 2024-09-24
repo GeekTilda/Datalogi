@@ -1,5 +1,6 @@
 from bintreeFile import Bintree
 from linkedQFile import LinkedQ
+from linkedQFile import ParentNode
 
 # Exception to signal when the solution is found
 class SolutionFound(Exception):
@@ -71,18 +72,4 @@ def makeWordList(filename):
             wordList.put(word)          # Puts it into the Bintree.
     return wordList
 
-# Class to represent each node in the word chain
-class ParentNode:
-    def __init__(self, word, parent=None):
-        self.word = word  # The word this node represents
-        self.parent = parent  # The parent node (the word before this one in the chain)
-
-    # GETTERS (& SETTERS)
-
-    def getWord(self):
-        return self.word
-    
-    def getParent(self):
-        return self.parent
-    
 main()
