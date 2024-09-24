@@ -10,14 +10,16 @@ def main():
     startWord = input("Ge ett startord: ")
     endWord = input("Ge ett slutord: ")
     if (startWord not in wordList) or (endWord not in wordList):
-        print(f"Välj giltiga, {len(wordList.root.getValue())} bokstäver långa ord att gå emellan!"); quit()
+        print(f"Välj giltiga, {len(wordList.root.getValue())} bokstäver långa ord att gå emellan!"); 
+        quit()
 
 
     q.enqueue(startWord)
     while not q.isEmpty():      # Searches through all words related to startWord until it finds endWord.
         word = q.dequeue()
         if word == endWord:
-            print(f"Det finns en väg till {endWord}!"); quit()
+            print(f"Det finns en väg till {endWord}!") 
+            quit()
         makeChildren(word, q, wordList, usedWords)
     print(f"Det finns ingen väg till {endWord}...")
 
@@ -26,7 +28,7 @@ def makeChildren(startWord, queue, wordList, usedWords):
     letters = "abcdefghijklmnopqrstuvwxyzåäö"       # Characters.
     usedWords.put(startWord)
 
-    for i in range(len(startWord)):
+    for i in range(len(startWord)):     # (len(startWord) is always 3)
         for letter in letters:
             newWord = startWord.replace(startWord[i], letter)           # Creates a new word with one letter changed.
 
