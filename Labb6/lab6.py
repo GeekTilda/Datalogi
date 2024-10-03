@@ -1,6 +1,7 @@
 from song import Song
 from searchAlgorithms import *
 from mergesort import mergesort
+from bubble_sort import bubble_sort
 import timeit
 
 class HashTable:
@@ -28,38 +29,23 @@ def fileToList(file):
             songList.append(Song(info[0], info[1], info[2], info[3]))
     return songList
 
-songList = fileToList("unique_tracks.txt")
+#songList = fileToList("C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\Labb6\\unique_tracks.txt")
 
 def main():
 
-    filename = "unique_tracks.txt"
+    filename = "C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\Labb6\\unique_tracks.txt"
 
     lista = fileToList(filename)
-    lista = lista[0:1000000]
+    lista = lista[0:100000]
     n = len(lista)
     print("Antal element =", n)
 
 
-    sista = lista[n-1]
-    testartist = sista.artist
+    bubtid = timeit.timeit(stmt = lambda: bubble_sort(lista), number = 1)
+    print("Bubble sorten tog ", round(bubtid, 4) , "sekunder")
 
-    sortedlist = lista.copy()
-    sortedlist.sort()
-
-    hashTable = HashTable()
-    for  key, value in enumerate(lista):
-        hashTable.insert(key, value)
-
-    
-
-    bintid = timeit.timeit(stmt = lambda: binary_search(sortedlist, sista), number = 10000)
-    print("Binärsökningen tog", round(bintid, 4) , "sekunder")
-
-    hashtid = timeit.timeit(stmt = lambda: hashTable.search(sista), number = 10000)
-    print("Hashsökningen tog", round(hashtid, 4) , "sekunder")
-
-    linjtid = timeit.timeit(stmt = lambda: linear_search(lista, testartist), number = 10000)
-    print("Linjärsökningen tog", round(linjtid, 4) , "sekunder")
+    mergtid = timeit.timeit(stmt = lambda: mergesort(lista), number = 1)
+    print("Mergesort tog ", round(mergtid, 4) , "sekunder")
 
 main()
 
