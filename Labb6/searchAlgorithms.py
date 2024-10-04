@@ -19,11 +19,19 @@ def linear_search(arr, target):     # From ChatGPT
             return target  # Target found at the current index
     return None  # Target not found
 
-def hash_search(arr, target):       # From ChatGPT
-    # Create a hash table (dictionary) from the array
-    hash_table = {value : index for index, value in enumerate(arr)}
-    
-    # Check if the target exists in the hash table
-    if target in hash_table:
-        return target # hash_table[target]  # Return the index of the target
-    return None  # Target not found
+class HashTable:    # From ChatGPT.
+    def __init__(self):
+        self.table = {}
+
+    def insert(self, key, value):
+        """Inserts a key-value pair into the hash table."""
+        self.table[key] = value
+
+    def search(self, key):
+        """Searches for a key in the hash table and returns its value if found, else None."""
+        return self.table.get(key, None)
+
+    def delete(self, key):
+        """Deletes a key-value pair from the hash table."""
+        if key in self.table:
+            del self.table[key]
