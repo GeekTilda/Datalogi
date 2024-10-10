@@ -11,24 +11,33 @@ class Hashtable:
        self.hashlist = [None]*size
 
     def store(self, key, data):
+        c = 0   #COUNTER
         hashKey = self.hashfunction(key)
         objectToStore = HashNode(key,data)
-        i = 1
-        while self.hashlist[hashKey] != None:
-            hashKey = ((hashKey+i**2)) % self.size
-            i = i + 1
-        self.hashlist[hashKey] = objectToStore
+        if self.hashlist[hashKey] != None:
+            if type(self.hashlist[hashKey]) == list:
+                self.hashlist[hashKey].insert(0,objectToStore)
+                c = 1   #COUNTER
+            else:
+                alreadyStored = self.hashlist[hashKey]
+                storedObjects = [alreadyStored,objectToStore]
+                self.hashlist[hashKey] = storedObjects
+                c = 1   #COUNTER
+        else:
+            self.hashlist[hashKey] = objectToStore
+        return c   #COUNTER
 
     def search(self, key):
         hashKey = self.hashfunction(key)
-        try:
-            i = 1
-            while self.hashlist[hashKey].key != key:
-                hashKey = (hashKey + i**2) % self.size
-                i = i + 1
+        if self.hashlist[hashKey] == None:
+            raise KeyError
+        if type(self.hashlist[hashKey]) == list:
+            for i in self.hashlist[hashKey]:
+                if i.key == key:
+                    return i.data
+            raise KeyError
+        if self.hashlist[hashKey].key == key:
             return self.hashlist[hashKey].data
-        except:
-            pass
         raise KeyError
 
     def hashfunction(self, key):

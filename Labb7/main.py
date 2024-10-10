@@ -1,6 +1,5 @@
 import csv
-from DictHash import DictHash
-from HashTable import Hashtable
+from hashtable import Hashtable
 
 class Drama:
     def __init__(self, drama):
@@ -26,18 +25,21 @@ class Drama:
     
     def highRating(self, rating):
         return float(self.rating) >= rating
-    
 
 
 def fileToList(file):
+    c = 0   #COUNTER
     dramaList = Hashtable(542)
     with open(file) as csvFile:
         dramaFile = csv.reader(csvFile, delimiter = ",")
         next(dramaFile)
         for drama in dramaFile:
             myDrama = Drama(drama)
-            dramaList.store(myDrama.name, myDrama)
+            c += dramaList.store(myDrama.name, myDrama) #RETURNED THE COUNTER
+    print(c)    #COUNTER
     return dramaList
+
+### MAIN
 
 def main():
     dramaList = fileToList("C:\\Users\\tilda\\Desktop\\KTH\\Datalogi\\Labb7\\kdrama.csv")
