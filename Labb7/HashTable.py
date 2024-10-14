@@ -43,7 +43,7 @@ class Hashtable:
     def hashfunction(self, key):
         hashKey = ""
         for c in str(key):
-            num = ord(c)
+            num = int(((ord(c)+14)*35 + (ord(c))*self.size)/3.1415926)
             hashKey += str(num)
         return int(hashKey) % self.size
     
@@ -56,3 +56,15 @@ class Hashtable:
         except KeyError:
             return False
         return True
+    
+table = Hashtable(10000)
+print(table.hashfunction("a"))
+print(table.hashfunction("b"))
+print(table.hashfunction("c"))
+print(table.hashfunction("d"))
+print(table.hashfunction("AB"))
+print(table.hashfunction("BA"))
+print(table.hashfunction("hej"))
+print(table.hashfunction("Hejsan"))
+print(table.hashfunction("TJA"))
+print(table.hashfunction("Tjenix"))
