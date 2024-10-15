@@ -61,6 +61,6 @@ def main():
             if molekyl(queue):
                 print("Formeln är syntaktiskt korrekt")
         except Syntaxfel as e:
-            print(f"Syntaxfel: {e}")
+            print(f"{e}")
 
 main()
