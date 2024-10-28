@@ -25,7 +25,6 @@ def atom(queue):
             queue.dequeue()  # Ta bort den lilla bokstaven om den finns
         return True
     else:
-        # Använd hela kön efter felet
         raise Syntaxfel(f"Saknad stor bokstav vid radslutet {queue.remainingQueue()}")
 
 def LETTER(char):
@@ -36,14 +35,23 @@ def letter(char):
 
 def num(queue):
     numStr = ""
-    while not queue.isEmpty() and queue.peek().isdigit():
-        numStr += queue.dequeue()
+    hasDigits = False  # Flagga för att se om vi har hittat siffror
 
-    if numStr and int(numStr) >= 2:
-        return True
-    else:
-        # Använd hela kön efter felet
-        raise Syntaxfel(f"För litet tal vid radslutet {queue.remainingQueue()}")
+    while not queue.isEmpty() and queue.peek().isdigit():
+        numStr += queue.peek()  # Hämta tecknet utan att ta bort det
+        hasDigits = True
+        queue.dequeue()
+
+    if hasDigits:
+        if numStr[0] == "0":  # Kontrollera om numStr börjar med 0
+            remaining = numStr[1:]  # Ta reda på kvarvarande tecken
+            raise Syntaxfel(f"För litet tal vid radslutet {remaining}")
+
+        if int(numStr) >= 2:
+            return True
+
+    remaining = queue.remainingQueue()
+    raise Syntaxfel(f"För litet tal vid radslutet {remaining}")
 
 def main():    
     while True:
@@ -61,6 +69,6 @@ def main():
             if molekyl(queue):
                 print("Formeln är syntaktiskt korrekt")
         except Syntaxfel as e:
-            print(f"{e}")
+            print(e)  # Skriv bara ut felmeddelandet
 
 main()

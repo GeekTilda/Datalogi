@@ -52,11 +52,10 @@ class LinkedQ():
             return None
         return self.__first.getValue()
 
-    def remainingQueue(self):   # Only for writing out error messages
-        remaining = []
-        current = self.__first
-        while current:
-            remaining.append(current.getValue())
-            current = current.getNext()
-        return "".join(remaining)
-
+    def remainingQueue(self):
+        remaining = ""
+        current = self.__first  # Vi sparar den aktuella noden
+        while current:  # Iterera över alla noder
+            remaining += current.getValue()  # Lägg till värdet i strängen
+            current = current.getNext()  # Flytta till nästa nod
+        return remaining  # Returnera den samlade strängen
