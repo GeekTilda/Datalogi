@@ -53,7 +53,7 @@ def num(queue):
     remaining = queue.remainingQueue()
     raise Syntaxfel(f"För litet tal vid radslutet {remaining}")
 
-def main():    
+def main():
     while True:
         atom = input("")
         if atom == "#":
