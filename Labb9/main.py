@@ -27,13 +27,17 @@ def group(queue):
         mol(queue)       # Hantera allt inom parenteserna
         if queue.peek() == ")":
             queue.dequeue()  # Ta bort slutparentesen
-            num(queue)       # Kontrollera efterföljande nummer
+            # Här kollar vi om det finns ett nummer efter stängd parentes
+            if not num(queue):  # Kontrollera om det finns ett nummer
+                raise Syntaxfel(f"Saknad siffra vid radslutet {queue.remainingQueue()}")
             return True
-        else:
-            raise Syntaxfel(f"Saknad högerparentes vid radslutet {queue.remainingQueue()}")
+        raise Syntaxfel(f"Saknad högerparentes vid radslutet {queue.remainingQueue()}")
+
     elif atom(queue):  # Annars ska gruppen börja med en atom
+        # Här tillåter vi att ingen siffra nödvändigtvis följer efter atomen
         num(queue)  # Kontrollera om ett valfritt nummer finns
         return True
+
     else:
         raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
 
@@ -68,7 +72,6 @@ def num(queue):
         if int(numStr) >= 2:
             return True
     return False  # Inga siffror betyder att `num` är valfri och kan saknas
-
 
 def main():    
     while True:
