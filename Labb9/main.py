@@ -96,4 +96,29 @@ def main():
         except Syntaxfel as e:
             print(e)
 
-main()
+#main()
+
+def tester1(mol):
+    molecule = mol
+    queue = LinkedQ()
+    for char in molecule:
+        queue.enqueue(char)
+    
+    try:
+        if formel(queue):
+            return("Formeln är syntaktiskt korrekt")
+    except Syntaxfel as e:
+        return str(e)
+
+# Gjorde två olika då vi fick problem med andra testet. 
+def tester2(mol):
+    molecule = mol
+    queue = LinkedQ()
+    for char in molecule:
+        queue.enqueue(char)
+    
+    try:
+        if formel(queue):
+            return("Formeln är syntaktiskt korrekt")
+    except Syntaxfel as e:
+        return str(e)

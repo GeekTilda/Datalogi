@@ -1,10 +1,10 @@
 from linkedQFile import LinkedQ
 
 class Syntaxfel(Exception):
-    def __init__(self, message):
-        super().__init__(message)
+    pass
 
 def molekyl(queue):
+    # <molekyl> ::= <atom> | <atom><num>
     if queue.isEmpty():
         raise Syntaxfel("Saknad stor bokstav vid radslutet.")
     
@@ -18,6 +18,7 @@ def molekyl(queue):
     return False
 
 def atom(queue):
+    # <atom>  ::= <LETTER> | <LETTER><letter>
     letter1 = queue.peek()  # Titta på första tecknet
     if LETTER(letter1):
         queue.dequeue()  # Ta bort den första bokstaven
@@ -28,12 +29,15 @@ def atom(queue):
         raise Syntaxfel(f"Saknad stor bokstav vid radslutet {queue.remainingQueue()}")
 
 def LETTER(char):
+    # <atom>  ::= <LETTER> | <LETTER><letter>
     return 'A' <= char <= 'Z'
 
 def letter(char):
+    # <letter>::= a | b | c | ... | z
     return 'a' <= char <= 'z'
 
 def num(queue):
+    # <num>   ::= 2 | 3 | 4 | ...
     numStr = ""
     hasDigits = False  # Flagga för att se om vi har hittat siffror
 
@@ -71,4 +75,14 @@ def main():
         except Syntaxfel as e:
             print(e)  # Skriv bara ut felmeddelandet
 
-main()
+#main()
+
+def tester(mol):
+    q = LinkedQ()
+    for tkn in mol:
+        q.enqueue(tkn)
+    try:
+        if molekyl(q):
+            return ("Formeln är syntaktiskt korrekt")
+    except Syntaxfel as e:
+        return str(e)

@@ -1,20 +1,16 @@
 import unittest
+from main import * 
 
-def LETTER(char):
-    return 'A' <= char <= 'Z'
+class SyntaxTest(unittest.TestCase):
+    def testCorrMol(self):
+        self.assertEqual(tester("H2"), "Formeln är syntaktiskt korrekt")
+        self.assertEqual(tester("H2O"), "Formeln är syntaktiskt korrekt")
 
-class TestLETTERFunc(unittest.TestCase):
-    def testLETTER1(self):
-        self.assertEqual(LETTER("A"), True)
+    def testWrongMol(self):
+        self.assertEqual(tester("a"), "Saknad stor bokstav vid radslutet a")
 
-    def testLETTERWrong(self):
-        self.assertEqual(LETTER("b"), True)
+    def testWrongMol2(self):
+        self.assertEqual(tester("H01011"),"För litet tal vid radslutet 1011")
 
-    def testLETTER2(self):
-        self.assertEqual(LETTER("G"), True)
-
-    def testLETTER3(self):
-        self.assertEqual(LETTER("Z"), True)
-
-
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()
