@@ -5,6 +5,7 @@ class Syntaxfel(Exception):
         super().__init__(message)
 
 def formel(queue):
+    # <formel>::= <mol> \n
     mol(queue)
     # Kontrollera att det inte finns kvarvarande tecken efter formeln
     if not queue.isEmpty():
@@ -12,6 +13,7 @@ def formel(queue):
     return True
 
 def mol(queue):
+    # <mol>   ::= <group> | <group><mol>
     if not group(queue):  # Kontrollera första gruppen
         return False
     # Kolla om fler grupper kan komma
@@ -21,6 +23,7 @@ def mol(queue):
     return True
 
 def group(queue):
+    # <group> ::= <atom> |<atom><num> | (<mol>) <num>
     # Kontrollera om gruppen börjar med en parentes
     if queue.peek() == "(":
         queue.dequeue()  # Ta bort öppningsparentesen
@@ -49,6 +52,7 @@ def group(queue):
 
 
 def atom(queue):
+    # <atom>  ::= <LETTER> | <LETTER><letter>
     atoms = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Fl Lv".split()
 
     if not LETTER(queue.peek()):
@@ -63,12 +67,15 @@ def atom(queue):
     return True
 
 def LETTER(char):
+    # <LETTER>::= A | B | C | ... | Z
     return 'A' <= char <= 'Z'
 
 def letter(char):
+    # <letter>::= a | b | c | ... | z
     return 'a' <= char <= 'z'
 
 def num(queue):
+    # <num>   ::= 2 | 3 | 4 | ...
     numStr = ""
     while not queue.isEmpty() and queue.peek().isdigit():
         numStr += queue.dequeue()
