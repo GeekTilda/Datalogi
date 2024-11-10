@@ -1,5 +1,5 @@
 from linkedQFile import LinkedQ
-from molgrafik import Molgrafik, 
+from molgrafik import Molgrafik, Ruta
 
 class Syntaxfel(Exception):
     pass
@@ -10,7 +10,7 @@ def formel(queue):
     # Kontrollera att det inte finns kvarvarande tecken efter formeln
     if not queue.isEmpty():
         raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
-    return True
+    return True, first
 
 def mol(queue):
     # <mol> ::= <group> | <group><mol> 
@@ -84,7 +84,7 @@ def letter(char):
     # <letter>::= a | b | c | ... | z
     return 'a' <= char <= 'z'
 
-def num(queue):
+def num(queue, rutan):
     # <num>   ::= 2 | 3 | 4 | ...
     numStr = ""
     while not queue.isEmpty() and queue.peek().isdigit():
@@ -94,7 +94,7 @@ def num(queue):
         if numStr[0] == "0" or numStr == "1":
             raise Syntaxfel(f"För litet tal vid radslutet {numStr[1:] + queue.remainingQueue()}")
         else:
-            rutan.num = numStr
+            rutan.num = int(numStr)
             return True
     return False
 
@@ -109,10 +109,11 @@ def main():
             queue.enqueue(char)
         
         try:
-            if formel(queue):
+            synKorr, first = formel(queue)
+            if synKorr:
                 print("Formeln är syntaktiskt korrekt")
-                mg = molgrafik.Molgrafik()
-                mg.show(molecule)
+                mg = Molgrafik()
+                mg.show(first)
         except Syntaxfel as e:
             print(e)
 
