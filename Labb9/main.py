@@ -1,11 +1,10 @@
 from linkedQFile import LinkedQ
 
 class Syntaxfel(Exception):
-    def __init__(self, message):
-        super().__init__(message)
+    pass
 
 def formel(queue):
-    # <formel>::= <mol> \n
+    # <formel> ::= <mol> \n
     mol(queue)
     # Kontrollera att det inte finns kvarvarande tecken efter formeln
     if not queue.isEmpty():
@@ -13,13 +12,13 @@ def formel(queue):
     return True
 
 def mol(queue):
-    # <mol>   ::= <group> | <group><mol>
-    if not group(queue):  # Kontrollera första gruppen
-        return False
+    # <mol> ::= <group> | <group><mol> 
+    if not group(queue):  # Kontrollera först gruppen
+        return
     # Kolla om fler grupper kan komma
-    while not queue.isEmpty() and queue.peek() not in ")":
+    while not queue.isEmpty() and queue.peek() != ")":
         if not group(queue):  # Om nästa inte är en giltig grupp, avsluta
-            return False
+            return
     return True
 
 def group(queue):
@@ -48,7 +47,6 @@ def group(queue):
         return True
 
     raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
-
 
 
 def atom(queue):
@@ -83,9 +81,8 @@ def num(queue):
     if numStr:
         if numStr[0] == "0" or numStr == "1":
             raise Syntaxfel(f"För litet tal vid radslutet {numStr[1:] + queue.remainingQueue()}")
-        if int(numStr) >= 2:
+        else:
             return True
-    return False  # Inga siffror betyder att `num` är valfri och kan saknas
 
 def main():    
     while True:
@@ -103,7 +100,7 @@ def main():
         except Syntaxfel as e:
             print(e)
 
-#main()
+main()
 
 def tester1(mol):
     molecule = mol
