@@ -3,7 +3,6 @@ from molgrafik import Molgrafik, Ruta
 
 ### DICTIONARY AV ATOMVIKTER FRÅN LABB 7
 atomVikter = {
-
     "H": 1.00794,
     "He": 4.002602,
     "Li": 6.941,
@@ -216,7 +215,13 @@ def num(queue, rutan):
     return False
 
 def weight(rutan):
-    vikt = atomVikter.get(rutan.atom) * rutan.num
+    vikt = 0
+    if rutan.atom == "()":
+        viktPar = weight(rutan.down) * (rutan.num - 1)
+        vikt = vikt + viktPar
+    else:
+        vikt = atomVikter.get(rutan.atom) * rutan.num
+
     if rutan.down == None:
         if rutan.next == None:
             return vikt
