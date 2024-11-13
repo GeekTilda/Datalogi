@@ -1,7 +1,7 @@
 from linkedQFile import LinkedQ
 from molgrafik import Molgrafik, Ruta
 
-### DICTIONARY AV ATOMVIKTER FRÅN LABB 7
+### DICTIONARY OF ATOM WEIGTHS
 atomVikter = {
     "H": 1.00794,
     "He": 4.002602,
@@ -120,22 +120,22 @@ atomVikter = {
 class Syntaxfel(Exception):
     pass
 
-def formel(queue):
+def readFormula(q):
     # <formel> ::= <mol> \n
-    tfm, first = mol(queue)
-    # Kontrollera att det inte finns kvarvarande tecken efter formeln
-    if not queue.isEmpty():
-        raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
+    tfm, first = readMol(q)
+    # Checks for leftover symbols after the molecule.
+    if not q.isEmpty():
+        raise Syntaxfel("Felaktig gruppstart")
     return True, first
 
-def mol(queue):
+def readMol(q):
     # <mol> ::= <group> | <group><mol> 
     first = None
     current = None
-    # Kolla om fler grupper kan komma
-    while not queue.isEmpty() and queue.peek() != ")":
-        tfg, rutan = group(queue)
-        if not tfg:  # Om nästa inte är en giltig grupp, avsluta
+    
+    while not q.isEmpty() and q.peek() != ")":
+        tfg, rutan = readGroup(q)
+        if not tfg:  # Break if next group is invalid.
             return False, None
         if first is None:
             first = rutan
@@ -145,70 +145,70 @@ def mol(queue):
             current = rutan
     return True, first
 
-def group(queue):
+def readGroup(q):
     rutan = Ruta()
     # <group> ::= <atom> |<atom><num> | (<mol>) <num>
-    # Kontrollera om gruppen börjar med en parentes
-    if queue.peek() == "(":
-        queue.dequeue()  # Ta bort öppningsparentesen
-        tfg, molruta = mol(queue)
+    # Check if the group starts with a parenthesis.
+    if q.peek() == "(":
+        q.dequeue()  # Remove "("
+        _, molruta = readMol(q)
         rutan.down = molruta
-        if queue.peek() == ")":
-            queue.dequeue()  # Ta bort slutparentesen
-            if not num(queue, rutan):  # Kontrollera om det finns ett nummer
-                raise Syntaxfel(f"Saknad siffra vid radslutet {queue.remainingQueue()}")
+        if q.peek() == ")":
+            q.dequeue()  # Remove ")"
+            if not readNum(q, rutan):  # Checks for numbers.
+                raise Syntaxfel("Saknad siffra")
             return True, rutan
-        raise Syntaxfel(f"Saknad högerparentes vid radslutet {queue.remainingQueue()}")
+        raise Syntaxfel("Saknad högerparentes")
 
-    # Kontrollera om queue är tom eller om det är en ogiltig karaktär
-    if queue.isEmpty() or queue.peek() == ")":
-        raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
+    # Checks if the queue is empty or if the next symbol is invalid.
+    if q.isEmpty() or q.peek() == ")":
+        raise Syntaxfel("Felaktig gruppstart")
 
-    # Kontrollera om tecknet är en siffra
-    if queue.peek().isdigit():
-        raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
+    # Checks if the next symbol is a number.
+    if q.peek().isdigit():
+        raise Syntaxfel("Felaktig gruppstart")
 
-    elif atom(queue, rutan):  # Annars ska gruppen börja med en atom
-        num(queue, rutan)  # Kontrollera om ett valfritt nummer finns
+    elif readAtom(q, rutan):  # Otherwise, the group starts with an atom.
+        readNum(q, rutan)  # Checks for numbers.
         return True, rutan
 
-    raise Syntaxfel(f"Felaktig gruppstart vid radslutet {queue.remainingQueue()}")
+    raise Syntaxfel("Felaktig gruppstart")
 
 
-def atom(queue, rutan):
-    # <atom>  ::= <LETTER> | <LETTER><letter>
+def readAtom(q, rutan):
+    # <atom> ::= <LETTER> | <LETTER><letter>
     atoms = "H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Fl Lv".split()
 
-    if not LETTER(queue.peek()):
-        raise Syntaxfel(f"Saknad stor bokstav vid radslutet {queue.remainingQueue()}")
+    if not readLETTER(q.peek()):
+        raise Syntaxfel("Saknad stor bokstav")
     
-    myAtom = queue.dequeue()
-    if not queue.isEmpty() and letter(queue.peek()):
-        myAtom += queue.dequeue()
+    myAtom = q.dequeue()
+    if not q.isEmpty() and readletter(q.peek()):
+        myAtom += q.dequeue()
     
     if myAtom not in atoms:
-        raise Syntaxfel(f"Okänd atom vid radslutet {queue.remainingQueue()}")
+        raise Syntaxfel("Okänd atom")
     
     rutan.atom = myAtom
     return True
 
-def LETTER(char):
-    # <LETTER>::= A | B | C | ... | Z
+def readLETTER(char):
+    # <LETTER> ::= A | B | C | ... | Z
     return 'A' <= char <= 'Z'
 
-def letter(char):
-    # <letter>::= a | b | c | ... | z
+def readletter(char):
+    # <letter> ::= a | b | c | ... | z
     return 'a' <= char <= 'z'
 
-def num(queue, rutan):
-    # <num>   ::= 2 | 3 | 4 | ...
+def readNum(q, rutan):
+    # <num> ::= 2 | 3 | 4 | ...
     numStr = ""
-    while not queue.isEmpty() and queue.peek().isdigit():
-        numStr += queue.dequeue()
+    while not q.isEmpty() and q.peek().isdigit():
+        numStr += q.dequeue()
 
     if numStr:
         if numStr[0] == "0" or numStr == "1":
-            raise Syntaxfel(f"För litet tal vid radslutet {numStr[1:] + queue.remainingQueue()}")
+            raise Syntaxfel("För litet tal")
         else:
             rutan.num = int(numStr)
             return True
@@ -216,39 +216,44 @@ def num(queue, rutan):
 
 def weight(rutan):
     vikt = 0
+
     if rutan.atom == "()":
-        viktPar = weight(rutan.down) * (rutan.num - 1)
-        vikt = vikt + viktPar
+        viktPar = 0
+        currentRuta = rutan.down
+
+        # Loops through every atom in ()-group and adds its weight to total sum.
+        while currentRuta != None:
+            if currentRuta.atom == "()":
+                viktPar += weight(currentRuta)
+            else:
+                viktPar += atomVikter.get(currentRuta.atom) * currentRuta.num
+            currentRuta = currentRuta.next
+        vikt = viktPar * rutan.num
     else:
         vikt = atomVikter.get(rutan.atom) * rutan.num
-
-    if rutan.down == None:
-        if rutan.next == None:
-            return vikt
-        else:
-            return vikt + weight(rutan.next)
+    
+    if rutan.next == None:
+        return vikt
     else:
-        return vikt + weight(rutan.down)
+        return vikt + weight(rutan.next)
 
-
-def main():    
+def main():
     while True:
-        molecule = input("")
-        if molecule == "#":
+        mol = input()
+        if mol == "#":
             break
-        
-        queue = LinkedQ()
-        for char in molecule:
-            queue.enqueue(char)
-        
+        q = LinkedQ()
+        for tkn in mol:
+            q.enqueue(tkn)
         try:
-            synKorr, first = formel(queue)
-            if synKorr:
+            synCorr, first = readFormula(q)
+            if synCorr:
                 print("Formeln är syntaktiskt korrekt")
                 print(weight(first))
                 mg = Molgrafik()
                 mg.show(first)
-        except Syntaxfel as e:
-            print(e)
+        except Syntaxfel as felet:
+            rest = str(q).strip()
+            print(felet, "vid radslutet", rest)
 
 main()
