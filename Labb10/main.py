@@ -122,28 +122,28 @@ class Syntaxfel(Exception):
 
 def readFormula(q):
     # <formel> ::= <mol> \n
-    tfm, first = readMol(q)
+    first = readMol(q)
     # Checks for leftover symbols after the molecule.
     if not q.isEmpty():
         raise Syntaxfel("Felaktig gruppstart")
     return True, first
 
 def readMol(q):
-    # <mol> ::= <group> | <group><mol> 
+    # <mol> ::= <group> | <group><mol>
     first = None
     current = None
-    
+
     while not q.isEmpty() and q.peek() != ")":
-        tfg, rutan = readGroup(q)
+        tfg, rutan = readGroup(q)   # tfg = True/False Group
         if not tfg:  # Break if next group is invalid.
-            return False, None
+            return None
         if first is None:
             first = rutan
             current = rutan
         else:
             current.next = rutan
             current = rutan
-    return True, first
+    return first
 
 def readGroup(q):
     rutan = Ruta()
@@ -151,7 +151,7 @@ def readGroup(q):
     # Check if the group starts with a parenthesis.
     if q.peek() == "(":
         q.dequeue()  # Remove "("
-        _, molruta = readMol(q)
+        molruta = readMol(q)
         rutan.down = molruta
         if q.peek() == ")":
             q.dequeue()  # Remove ")"
@@ -243,8 +243,8 @@ def main():
         if mol == "#":
             break
         q = LinkedQ()
-        for tkn in mol:
-            q.enqueue(tkn)
+        for char in mol:
+            q.enqueue(char)
         try:
             synCorr, first = readFormula(q)
             if synCorr:
@@ -253,7 +253,7 @@ def main():
                 mg = Molgrafik()
                 mg.show(first)
         except Syntaxfel as felet:
-            rest = str(q).strip()
+            rest = str(q)
             print(felet, "vid radslutet", rest)
 
 main()

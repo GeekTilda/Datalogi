@@ -51,11 +51,3 @@ class LinkedQ():
         if self.isEmpty():
             return None
         return self.__first.getValue()
-
-    def remainingQueue(self):
-        remaining = ""
-        current = self.__first  # Vi sparar den aktuella noden
-        while current:  # Iterera över alla noder
-            remaining += current.getValue()  # Lägg till värdet i strängen
-            current = current.getNext()  # Flytta till nästa nod
-        return remaining  # Returnera den samlade strängen
